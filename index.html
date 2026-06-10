@@ -620,6 +620,7 @@ function saveProfile() {
   const data = loadData();
   if (!data.profiles) data.profiles = {};
   data.profiles[currentUser.email] = { name, nik, dept, role, email: currentUser.email };
+  data.lastEmail = currentUser.email;
   saveData(data);
   userProfile = data.profiles[currentUser.email];
 
@@ -1182,15 +1183,7 @@ window.addEventListener('load', () => {
   }
 });
 
-// Save last email on login
-const _origSaveProfile = saveProfile;
-// patch to save lastEmail
-function saveProfile() {
-  _origSaveProfile();
-  const data = loadData();
-  data.lastEmail = currentUser.email;
-  saveData(data);
-}
+
 </script>
 </body>
 </html>
