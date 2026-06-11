@@ -6,8 +6,8 @@
 <meta name="theme-color" content="#1d4ed8">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="AbsensiKu">
-<title>AbsensiKu</title>
+<meta name="apple-mobile-web-app-title" content="MyHeris">
+<title>MyHeris</title>
 <link rel="manifest" href="manifest.json">
 <!-- Leaflet Maps -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
@@ -262,11 +262,11 @@
 
 <!-- LOGIN SCREEN -->
 <div id="login-screen">
-  <div class="login-logo">
-    <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+  <div class="login-logo" style="background:white; border-radius:16px; padding:8px; width:80px; height:80px;">
+    <img src="LOGO_HERIS_KONTRAKTOR-03.jpg" style="width:64px; height:64px; object-fit:contain; border-radius:8px;">
   </div>
-  <div class="login-title">AbsensiKu</div>
-  <div class="login-subtitle">Sistem absensi cerdas untuk tim Anda</div>
+  <div class="login-title">MyHeris</div>
+  <div class="login-subtitle">Sistem Absensi Heris Group</div>
   <div class="login-card">
     <h2>Selamat datang 👋</h2>
     <p>Masuk dengan akun Google perusahaan Anda untuk mulai absensi.</p>
@@ -550,6 +550,10 @@
   </div>
 </div>
 
+
+<!-- FOOTER -->
+<div id="app-footer" style="display:none; text-align:center; padding:8px 16px 72px; font-size:12px; color:var(--gray-400);">© 2026 RMDK IT</div>
+
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
@@ -646,6 +650,7 @@ function launchApp() {
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('setup-screen').style.display = 'none';
   document.getElementById('app').style.display = 'block';
+  document.getElementById('app-footer').style.display = 'block';
 
   updateTopAvatar();
   updateProfileTab();
@@ -1065,8 +1070,10 @@ async function sendToSheets(record) {
     const payload = {
       action: 'addRecord',
       ...record,
-      photo: '[base64_foto]' // Don't send full base64 to sheets, too large
+      photoBase64: record.photo ? record.photo.split(',')[1] : null,
+      photoMime: 'image/jpeg'
     };
+    delete payload.photo;
     await fetch(data.sheetsUrl, { method: 'POST', body: JSON.stringify(payload) });
   } catch (e) {
     console.warn('Sheets sync failed:', e);
